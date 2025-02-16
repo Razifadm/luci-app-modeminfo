@@ -31,7 +31,7 @@ network=$(echo "$signal" | grep 'QENG' | grep -oE 'LTE|NR5G-NSA' | tr '\n' ' ')
 modem=$(sms_tool -d $commport at "ati" | sed -n '2{h}; 3{H; x; s/\n/ /p}' | tr -d '\r\n')
 
 # Extract revision using AT+QGMR command and remove newlines
-revision=$(sms_tool -d $commport at "at+qgmr" | tr -d '\r' | tr -d '\n')
+revision=$(sms_tool -d $commport at "at+qgmr" | sed '1d')
 
 # Extract ISP from the $signal output (QSPN part)
 isp=$(echo "$signal" | grep 'QSPN:' | awk -F\" '{print $2}' | tr -d '\r' | tr -d '\n')
@@ -40,7 +40,7 @@ isp=$(echo "$signal" | grep 'QSPN:' | awk -F\" '{print $2}' | tr -d '\r' | tr -d
 temperature=$(sms_tool -d $commport at "at+qtemp" | awk -F[,:] '/^\+QTEMP/{print $3}' | sort -r | head -n1 | xargs)
 [ -z "$temperature" ] && temperature="N/A"
 
-imei=$(sms_tool -d $commport at "at+cgsn" | sed 's/[[:space:]]*$//' | tr -d '\r\n')
+imei=$(sms_tool -d $commport at "at+cgsn" | sed '1d')
 
 # Extract data for CSQ
 csq=$(echo "$signal" | grep 'csq:' | awk -F'[ ,:]' '{print $3}')
