@@ -1,5 +1,5 @@
-#!/bin/bash
-# Copyright (C) 2024 SolomonRicky <yizhen.c02@gmail.com>
+#!/bin/sh
+# Copyright (C) 2024 - 2025 SolomonRicky <yizhen.c02@gmail.com>
 
 # Fetch comm port from setting
 commport=$(uci get modeminfo.settings.comm)
