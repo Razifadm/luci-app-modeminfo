@@ -2,33 +2,33 @@
 
 <h1>Modem Information</h1>
 <p style="display: flex; align-items: center;">
-    If you like my work, please consider supporting me:           <img id="star"
-     src="/luci-static/resources/modeminfo/Star.svg?654407727g"
-     loading="lazy"
-     alt="Star"
-     width="50px"
-     height="20px"
-     style="margin-left: 10px;"
-     onerror="return imgerrorfuns(this,'https://img.shields.io/badge/Star--lightgrey?logo=github&amp;style=social')"
-     onclick="window.open('https://github.com/solomonricky/luci-app-modeminfo', '_blank')">
+    If you like my work, please consider supporting me:         <img id="star"
+      src="/luci-static/resources/modeminfo/Star.svg?654407727g"
+      loading="lazy"
+      alt="Star"
+      width="50px"
+      height="20px"
+      style="margin-left: 10px;"
+      onerror="return imgerrorfuns(this,'https://img.shields.io/badge/Star--lightgrey?logo=github&amp;style=social')"
+      onclick="window.open('https://github.com/solomonricky/luci-app-modeminfo', '_blank')">
 
 <img id="sponsor"
-     src="/luci-static/resources/modeminfo/Sponsor.svg?308407727"
-     loading="lazy"
-     alt="Sponsor"
-     width="73px"
-     height="20px"
-     style="margin-left: 10px;"
-     onerror="return imgerrorfuns(this,'https://img.shields.io/badge/Sponsor--lightgrey?logo=ko-fi&amp;style=social')"
-     onclick="window.open('https://buymeacoffee.com/solomonricky', '_blank')">
+      src="/luci-static/resources/modeminfo/Sponsor.svg?308407727"
+      loading="lazy"
+      alt="Sponsor"
+      width="73px"
+      height="20px"
+      style="margin-left: 10px;"
+      onerror="return imgerrorfuns(this,'https://img.shields.io/badge/Sponsor--lightgrey?logo=ko-fi&amp;style=social')"
+      onclick="window.open('https://buymeacoffee.com/solomonricky', '_blank')">
 
 <img id="telegram"
-     src="/luci-static/resources/modeminfo/Telegram.svg?308407727"
-     loading="lazy"
-     alt="Telegram"
-     style="margin-left: 10px;"
-     onerror="return imgerrorfuns(this,'https://img.shields.io/badge/Telegram--lightgrey?logo=Telegram&amp;style=social')"
-     onclick="window.open('https://t.me/myopenwrt', '_blank')">
+      src="/luci-static/resources/modeminfo/Telegram.svg?308407727"
+      loading="lazy"
+      alt="Telegram"
+      style="margin-left: 10px;"
+      onerror="return imgerrorfuns(this,'https://img.shields.io/badge/Telegram--lightgrey?logo=Telegram&amp;style=social')"
+      onclick="window.open('https://t.me/myopenwrt', '_blank')">
 
 </p>
 </br>          <h2>General Information</h2>
@@ -77,7 +77,7 @@
     <tr>
         <td style="width: 33%; padding: 10px;"><strong>CSQ:</strong></td>
         <td id="csq" style="padding: 10px;">Loading...</td>
-    </tr>                 
+    </tr>                
 <tr id="row-signal-strength">
     <td style="width: 33%; padding: 10px;"><strong>Signal Strength:</strong></td>
     <td id="signal-strength" style="padding: 10px;">
@@ -235,7 +235,7 @@
         <option value="60" <%=refresh_rate == "60" and "selected" or ""%>>60 seconds</option>
     </select>
     <button type="submit" class="btn">Save Refresh Rate</button>
-</form>              <style>
+</form>            <style>
     /* Progress bar container */
     .progress-bar {
         width: 100%;
@@ -282,7 +282,7 @@
     .progress-orange { background-color: orange; }
     .progress-yellow { background-color: yellow; }
     .progress-green { background-color: lime; }
-</style>                  <script>
+</style>              <script>
 // Function to calculate percentage based on min and max values
 function calculatePercentage(value, min, max) {
     return Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
@@ -334,12 +334,13 @@ function updateProgressBar(elementId, valueId, value, min, max, isPercentage = f
 function showRelevantRows(networkType) {
     const allGroups = ['lte-group', 'nr5g-nsa-group', 'nr5g-sa-group'];
 
-    // Hide all groups first
+    // Hide all groups and the RSSI row first
     allGroups.forEach(groupClass => {
         document.querySelectorAll(`.${groupClass}`).forEach(row => {
             row.classList.add('hidden-row');
         });
     });
+    document.getElementById('row-rssi').classList.add('hidden-row');
 
     // Show groups based on the detected network type
     if (networkType.includes("NR5G-SA")) {
@@ -350,10 +351,12 @@ function showRelevantRows(networkType) {
         document.querySelectorAll('.lte-group, .nr5g-nsa-group').forEach(row => {
             row.classList.remove('hidden-row');
         });
+        document.getElementById('row-rssi').classList.remove('hidden-row'); // Show RSSI for NSA
     } else if (networkType.includes("LTE")) {
         document.querySelectorAll('.lte-group').forEach(row => {
             row.classList.remove('hidden-row');
         });
+        document.getElementById('row-rssi').classList.remove('hidden-row'); // Show RSSI for LTE
     }
 }
 
