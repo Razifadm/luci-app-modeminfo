@@ -77,7 +77,8 @@
     <tr>
         <td style="width: 33%; padding: 10px;"><strong>CSQ:</strong></td>
         <td id="csq" style="padding: 10px;">Loading...</td>
-    </tr>              <tr>
+    </tr>              
+<tr id="row-signal-strength">
     <td style="width: 33%; padding: 10px;"><strong>Signal Strength:</strong></td>
     <td id="signal-strength" style="padding: 10px;">
         <div id="signal-progress" class="progress-bar">
@@ -86,7 +87,7 @@
         </div>
     </td>
 </tr>
-<tr>
+<tr id="row-rssi">
     <td style="width: 33%; padding: 10px;"><strong>RSSI:</strong></td>
     <td id="rssi" style="padding: 10px;">
         <div id="rssi-progress" class="progress-bar">
@@ -95,7 +96,7 @@
         </div>
     </td>
 </tr>
-<tr>
+<tr id="row-lte-rsrq" class="lte-group">
     <td style="width: 33%; padding: 10px;"><strong>LTE RSRQ:</strong></td>
     <td id="rsrq-4g" style="padding: 10px;">
         <div id="lte-rsrq-progress" class="progress-bar">
@@ -104,7 +105,7 @@
         </div>
     </td>
 </tr>
-<tr>
+<tr id="row-lte-rsrp" class="lte-group">
     <td style="width: 33%; padding: 10px;"><strong>LTE RSRP:</strong></td>
     <td id="lte-rsrp" style="padding: 10px;">
         <div id="lte-rsrp-progress" class="progress-bar">
@@ -113,7 +114,7 @@
         </div>
     </td>
 </tr>
-<tr>
+<tr id="row-lte-sinr" class="lte-group">
     <td style="width: 33%; padding: 10px;"><strong>LTE SINR:</strong></td>
     <td id="lte-sinr" style="padding: 10px;">
         <div id="lte-sinr-progress" class="progress-bar">
@@ -122,7 +123,7 @@
         </div>
     </td>
 </tr>
-<tr>
+<tr id="row-nr5g-nsa-rsrq" class="nr5g-nsa-group">
     <td style="width: 33%; padding: 10px;"><strong>NR5G-NSA RSRQ:</strong></td>
     <td id="nr5g-nsa-rsrq" style="padding: 10px;">
         <div id="nr5g-nsa-rsrq-progress" class="progress-bar">
@@ -131,7 +132,7 @@
         </div>
     </td>
 </tr>
-<tr>
+<tr id="row-nr5g-nsa-rsrp" class="nr5g-nsa-group">
     <td style="width: 33%; padding: 10px;"><strong>NR5G-NSA RSRP:</strong></td>
     <td id="nr5g-nsa-rsrp" style="padding: 10px;">
         <div id="nr5g-nsa-rsrp-progress" class="progress-bar">
@@ -140,7 +141,7 @@
         </div>
     </td>
 </tr>
-<tr>
+<tr id="row-nr5g-nsa-sinr" class="nr5g-nsa-group">
     <td style="width: 33%; padding: 10px;"><strong>NR5G-NSA SINR:</strong></td>
     <td id="nr5g-nsa-sinr" style="padding: 10px;">
         <div id="nr5g-nsa-sinr-progress" class="progress-bar">
@@ -149,7 +150,7 @@
         </div>
     </td>
 </tr>
-<tr>
+<tr id="row-nr5g-sa-rsrq" class="nr5g-sa-group">
     <td style="width: 33%; padding: 10px;"><strong>NR5G-SA RSRQ:</strong></td>
     <td id="nr5g-sa-rsrq" style="padding: 10px;">
         <div id="nr5g-sa-rsrq-progress" class="progress-bar">
@@ -158,7 +159,7 @@
         </div>
     </td>
 </tr>
-<tr>
+<tr id="row-nr5g-sa-rsrp" class="nr5g-sa-group">
     <td style="width: 33%; padding: 10px;"><strong>NR5G-SA RSRP:</strong></td>
     <td id="nr5g-sa-rsrp" style="padding: 10px;">
         <div id="nr5g-sa-rsrp-progress" class="progress-bar">
@@ -167,7 +168,7 @@
         </div>
     </td>
 </tr>
-<tr>
+<tr id="row-nr5g-sa-sinr" class="nr5g-sa-group">
     <td style="width: 33%; padding: 10px;"><strong>NR5G-SA SINR:</strong></td>
     <td id="nr5g-sa-sinr" style="padding: 10px;">
         <div id="nr5g-sa-sinr-progress" class="progress-bar">
@@ -270,6 +271,11 @@
         text-align: center;
         width: 100%;
     }
+    
+    /* CSS to hide rows */
+    .hidden-row {
+        display: none;
+    }
 
     /* Colors for progress bar */
     .progress-red { background-color: red; }
@@ -324,19 +330,48 @@ function updateProgressBar(elementId, valueId, value, min, max, isPercentage = f
     progressBarInner.className = `progress-bar-inner ${colorClass}`;
 }
 
+// Function to show/hide rows based on network type
+function showRelevantRows(networkType) {
+    const allGroups = ['lte-group', 'nr5g-nsa-group', 'nr5g-sa-group'];
+
+    // Hide all groups first
+    allGroups.forEach(groupClass => {
+        document.querySelectorAll(`.${groupClass}`).forEach(row => {
+            row.classList.add('hidden-row');
+        });
+    });
+
+    // Show groups based on the detected network type
+    if (networkType.includes("NR5G-SA")) {
+        document.querySelectorAll('.nr5g-sa-group').forEach(row => {
+            row.classList.remove('hidden-row');
+        });
+    } else if (networkType.includes("NR5G-NSA")) {
+        document.querySelectorAll('.lte-group, .nr5g-nsa-group').forEach(row => {
+            row.classList.remove('hidden-row');
+        });
+    } else if (networkType.includes("LTE")) {
+        document.querySelectorAll('.lte-group').forEach(row => {
+            row.classList.remove('hidden-row');
+        });
+    }
+}
+
+
 // Update function to refresh data
 function updateModemInfo() {
     fetch('<%=luci.dispatcher.build_url("admin/modem/modeminfo/get_info")%>')
         .then(response => response.json())
         .then(data => {
             // Update plain text fields (Network and CSQ)
+            const network = data["Network"] || "No Signal";
             document.getElementById('modem').innerText = data["Modem"] || "N/A";
             document.getElementById('imei').innerText = data["IMEI"] || "N/A";
             document.getElementById('isp').innerText = data["ISP"] || "N/A";
             document.getElementById('revision').innerText = data["Revision"] || "N/A";
             document.getElementById('protocol').innerText = data["Protocol"] || "N/A";
             document.getElementById('temperature').innerText = data["Temperature"] || "N/A";
-            document.getElementById('network').innerText = data["Network"] || "No Signal";
+            document.getElementById('network').innerText = network;
             document.getElementById('csq').innerText = data["CSQ"] || "No Signal";
             document.getElementById('mcc').innerText = data["LTE MCC"] || "No Signal";
             document.getElementById('mnc').innerText = data["LTE MNC"] || "No Signal";
@@ -347,6 +382,9 @@ function updateModemInfo() {
             document.getElementById('scc2').innerText = data["SCC2"] || "-";
             document.getElementById('scc3').innerText = data["SCC3"] || "-";
             document.getElementById('scc4').innerText = data["SCC4"] || "-";
+
+            // Show or hide relevant rows based on network type
+            showRelevantRows(network);
 
             // Update progress bars for relevant metrics
             const csqper = parseFloat(data["Signal Strength"]);
@@ -428,8 +466,8 @@ setInterval(updateModemInfo, refresh_rate);
 // Fetch comm ports on page load
 window.onload = function() {
     fetchCommPorts();
+    // Trigger an initial fetch on page load
+    updateModemInfo();
 };
-// Trigger an initial fetch on page load
-updateModemInfo();
 </script>
 <%+footer%>
