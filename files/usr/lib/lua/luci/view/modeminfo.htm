@@ -77,8 +77,7 @@
     <tr>
         <td style="width: 33%; padding: 10px;"><strong>CSQ:</strong></td>
         <td id="csq" style="padding: 10px;">Loading...</td>
-    </tr>              
-<tr id="row-signal-strength">
+    </tr>              <tr>
     <td style="width: 33%; padding: 10px;"><strong>Signal Strength:</strong></td>
     <td id="signal-strength" style="padding: 10px;">
         <div id="signal-progress" class="progress-bar">
@@ -87,7 +86,7 @@
         </div>
     </td>
 </tr>
-<tr id="row-rssi">
+<tr>
     <td style="width: 33%; padding: 10px;"><strong>RSSI:</strong></td>
     <td id="rssi" style="padding: 10px;">
         <div id="rssi-progress" class="progress-bar">
@@ -96,7 +95,7 @@
         </div>
     </td>
 </tr>
-<tr id="row-lte-rsrq">
+<tr>
     <td style="width: 33%; padding: 10px;"><strong>LTE RSRQ:</strong></td>
     <td id="rsrq-4g" style="padding: 10px;">
         <div id="lte-rsrq-progress" class="progress-bar">
@@ -105,7 +104,7 @@
         </div>
     </td>
 </tr>
-<tr id="row-lte-rsrp">
+<tr>
     <td style="width: 33%; padding: 10px;"><strong>LTE RSRP:</strong></td>
     <td id="lte-rsrp" style="padding: 10px;">
         <div id="lte-rsrp-progress" class="progress-bar">
@@ -114,7 +113,7 @@
         </div>
     </td>
 </tr>
-<tr id="row-lte-sinr">
+<tr>
     <td style="width: 33%; padding: 10px;"><strong>LTE SINR:</strong></td>
     <td id="lte-sinr" style="padding: 10px;">
         <div id="lte-sinr-progress" class="progress-bar">
@@ -123,7 +122,7 @@
         </div>
     </td>
 </tr>
-<tr id="row-nr5g-nsa-rsrq">
+<tr>
     <td style="width: 33%; padding: 10px;"><strong>NR5G-NSA RSRQ:</strong></td>
     <td id="nr5g-nsa-rsrq" style="padding: 10px;">
         <div id="nr5g-nsa-rsrq-progress" class="progress-bar">
@@ -132,7 +131,7 @@
         </div>
     </td>
 </tr>
-<tr id="row-nr5g-nsa-rsrp">
+<tr>
     <td style="width: 33%; padding: 10px;"><strong>NR5G-NSA RSRP:</strong></td>
     <td id="nr5g-nsa-rsrp" style="padding: 10px;">
         <div id="nr5g-nsa-rsrp-progress" class="progress-bar">
@@ -141,7 +140,7 @@
         </div>
     </td>
 </tr>
-<tr id="row-nr5g-nsa-sinr">
+<tr>
     <td style="width: 33%; padding: 10px;"><strong>NR5G-NSA SINR:</strong></td>
     <td id="nr5g-nsa-sinr" style="padding: 10px;">
         <div id="nr5g-nsa-sinr-progress" class="progress-bar">
@@ -150,7 +149,7 @@
         </div>
     </td>
 </tr>
-<tr id="row-nr5g-sa-rsrq">
+<tr>
     <td style="width: 33%; padding: 10px;"><strong>NR5G-SA RSRQ:</strong></td>
     <td id="nr5g-sa-rsrq" style="padding: 10px;">
         <div id="nr5g-sa-rsrq-progress" class="progress-bar">
@@ -159,7 +158,7 @@
         </div>
     </td>
 </tr>
-<tr id="row-nr5g-sa-rsrp">
+<tr>
     <td style="width: 33%; padding: 10px;"><strong>NR5G-SA RSRP:</strong></td>
     <td id="nr5g-sa-rsrp" style="padding: 10px;">
         <div id="nr5g-sa-rsrp-progress" class="progress-bar">
@@ -168,7 +167,7 @@
         </div>
     </td>
 </tr>
-<tr id="row-nr5g-sa-sinr">
+<tr>
     <td style="width: 33%; padding: 10px;"><strong>NR5G-SA SINR:</strong></td>
     <td id="nr5g-sa-sinr" style="padding: 10px;">
         <div id="nr5g-sa-sinr-progress" class="progress-bar">
@@ -271,11 +270,6 @@
         text-align: center;
         width: 100%;
     }
-    
-    /* CSS to hide rows */
-    .hidden-row {
-        display: none;
-    }
 
     /* Colors for progress bar */
     .progress-red { background-color: red; }
@@ -330,48 +324,6 @@ function updateProgressBar(elementId, valueId, value, min, max, isPercentage = f
     progressBarInner.className = `progress-bar-inner ${colorClass}`;
 }
 
-// Function to show/hide rows based on signal data
-function showRelevantRows(data) {
-    // Determine which network type is active
-    const isLte = data["LTE RSRP"] && data["LTE RSRP"] !== "No Signal" && !isNaN(parseFloat(data["LTE RSRP"]));
-    const isNr5gNsa = data["NR5G RSRP"] && data["NR5G RSRP"] !== "No Signal" && !isNaN(parseFloat(data["NR5G RSRP"]));
-    const isNr5gSa = data["NR5G-SA RSRP"] && data["NR5G-SA RSRP"] !== "No Signal" && !isNaN(parseFloat(data["NR5G-SA RSRP"]));
-
-    // List of all rows to manage
-    const lteRows = ['row-lte-rsrq', 'row-lte-rsrp', 'row-lte-sinr'];
-    const nr5gNsaRows = ['row-nr5g-nsa-rsrq', 'row-nr5g-nsa-rsrp', 'row-nr5g-nsa-sinr'];
-    const nr5gSaRows = ['row-nr5g-sa-rsrq', 'row-nr5g-sa-rsrp', 'row-nr5g-sa-sinr'];
-
-    // Hide all rows initially
-    [...lteRows, ...nr5gNsaRows, ...nr5gSaRows].forEach(id => {
-        const row = document.getElementById(id);
-        if (row) row.classList.add('hidden-row');
-    });
-
-    // Show rows based on active network
-    if (isNr5gSa) {
-        nr5gSaRows.forEach(id => {
-            const row = document.getElementById(id);
-            if (row) row.classList.remove('hidden-row');
-        });
-    } else if (isNr5gNsa) {
-        lteRows.forEach(id => {
-            const row = document.getElementById(id);
-            if (row) row.classList.remove('hidden-row');
-        });
-        nr5gNsaRows.forEach(id => {
-            const row = document.getElementById(id);
-            if (row) row.classList.remove('hidden-row');
-        });
-    } else if (isLte) {
-        lteRows.forEach(id => {
-            const row = document.getElementById(id);
-            if (row) row.classList.remove('hidden-row');
-        });
-    }
-}
-
-
 // Update function to refresh data
 function updateModemInfo() {
     fetch('<%=luci.dispatcher.build_url("admin/modem/modeminfo/get_info")%>')
@@ -396,18 +348,15 @@ function updateModemInfo() {
             document.getElementById('scc3').innerText = data["SCC3"] || "-";
             document.getElementById('scc4').innerText = data["SCC4"] || "-";
 
-            // Show or hide relevant rows
-            showRelevantRows(data);
-
             // Update progress bars for relevant metrics
             const csqper = parseFloat(data["Signal Strength"]);
             const rssi = parseFloat(data["RSSI"]);
             const lte_rsrq = parseFloat(data["LTE RSRQ"]);
             const lte_rsrp = parseFloat(data["LTE RSRP"]);
             const lte_sinr = parseFloat(data["LTE SINR"]);
-            const nr5g_nsa_rsrq = parseFloat(data["NR5G RSRQ"]);
-            const nr5g_nsa_rsrp = parseFloat(data["NR5G RSRP"]);
-            const nr5g_nsa_sinr = parseFloat(data["NR5G SINR"]);
+            const nr5g_nsa_rsrq = parseFloat(data["NR5G-NSA RSRQ"]);
+            const nr5g_nsa_rsrp = parseFloat(data["NR5G-NSA RSRP"]);
+            const nr5g_nsa_sinr = parseFloat(data["NR5G-NSA SINR"]);
             const nr5g_sa_rsrq = parseFloat(data["NR5G-SA RSRQ"]);
             const nr5g_sa_rsrp = parseFloat(data["NR5G-SA RSRP"]);
             const nr5g_sa_sinr = parseFloat(data["NR5G-SA SINR"]);
@@ -479,8 +428,8 @@ setInterval(updateModemInfo, refresh_rate);
 // Fetch comm ports on page load
 window.onload = function() {
     fetchCommPorts();
-    // Trigger an initial fetch on page load
-    updateModemInfo();
 };
+// Trigger an initial fetch on page load
+updateModemInfo();
 </script>
 <%+footer%>
