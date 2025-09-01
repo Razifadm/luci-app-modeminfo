@@ -376,8 +376,8 @@ function getNetworkData(data) {
         return {
             mcc: data["NR5G-NSA MCC"] || "No Signal",
             mnc: data["NR5G-NSA MNC"] || "No Signal",
-            cellid: data["NR5G-NSA Cell ID"] || "No Signal",
-            deccellid: data["NR5G-NSA Cell ID (Dec)"] || "No Signal"
+            cellid: data["LTE Cell ID"] || "No Signal",
+            deccellid: data["LTE Cell ID (Dec)"] || "No Signal"
         };
     }
     // Check if LTE is the current network
