@@ -1,74 +1,6 @@
 <%+header%>
 
-<h1>Modem Information</h1>
-<p style="display: flex; align-items: center;">
-    If you like my work, please consider supporting me:         <img id="star"
-      src="/luci-static/resources/modeminfo/Star.svg?654407727g"
-      loading="lazy"
-      alt="Star"
-      width="50px"
-      height="20px"
-      style="margin-left: 10px;"
-      onerror="return imgerrorfuns(this,'https://img.shields.io/badge/Star--lightgrey?logo=github&amp;style=social')"
-      onclick="window.open('https://github.com/solomonricky/luci-app-modeminfo', '_blank')">
-
-<img id="sponsor"
-      src="/luci-static/resources/modeminfo/Sponsor.svg?308407727"
-      loading="lazy"
-      alt="Sponsor"
-      width="73px"
-      height="20px"
-      style="margin-left: 10px;"
-      onerror="return imgerrorfuns(this,'https://img.shields.io/badge/Sponsor--lightgrey?logo=ko-fi&amp;style=social')"
-      onclick="window.open('https://buymeacoffee.com/solomonricky', '_blank')">
-
-<img id="telegram"
-      src="/luci-static/resources/modeminfo/Telegram.svg?308407727"
-      loading="lazy"
-      alt="Telegram"
-      style="margin-left: 10px;"
-      onerror="return imgerrorfuns(this,'https://img.shields.io/badge/Telegram--lightgrey?logo=Telegram&amp;style=social')"
-      onclick="window.open('https://t.me/myopenwrt', '_blank')">
-
-</p>
-</br>          <h2>General Information</h2>
-<table class="table" id="general-info-table" style="border-spacing: 10px 20px;">
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>Modem:</strong></td>
-        <td id="modem" style="padding: 10px;">Loading...</td>
-    </tr>
-    <tr></tr>
-        <td style="width: 33%; padding: 10px;"><strong>IMEI:</strong></td>
-        <td id="imei" style="padding: 10px;">Loading...</td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>Temperature:</strong></td>
-        <td id="temperature" style="padding: 10px;">Loading...</td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>ISP:</strong></td>
-        <td id="isp" style="padding: 10px;">Loading...</td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>Protocol:</strong></td>
-        <td id="protocol" style="padding: 10px;">Loading...</td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>Firmware Version:</strong></td>
-        <td id="revision" style="padding: 10px;">Loading...</td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>Comm Port:</strong></td>
-        <td id="commport" style="padding: 10px;">
-            <form method="POST" action="<%=luci.dispatcher.build_url('admin/modem/modeminfo/save_port')%>">
-                <select name="commport" id="commport-select" style="margin-bottom: 20px;">
-                    </select>
-                <button type="submit" class="btn">Save</button>
-            </form>
-        </td>
-    </tr>
-</table>
-</br>          <h2>Signal Information</h2>
+<h2>Signal Information</h2>
 <table class="table" id="signal-info-table" style="border-spacing: 10px 20px;">
     <tr>
         <td style="width: 33%; padding: 10px;"><strong>Network:</strong></td>
@@ -179,6 +111,44 @@
 </tr>
 
 </table>
+<h1>General Information</h1>
+<table class="table" id="general-info-table" style="border-spacing: 10px 20px;">
+    <tr>
+        <td style="width: 33%; padding: 10px;"><strong>Modem:</strong></td>
+        <td id="modem" style="padding: 10px;">Loading...</td>
+    </tr>
+    <tr></tr>
+        <td style="width: 33%; padding: 10px;"><strong>IMEI:</strong></td>
+        <td id="imei" style="padding: 10px;">Loading...</td>
+    </tr>
+    <tr>
+        <td style="width: 33%; padding: 10px;"><strong>Temperature:</strong></td>
+        <td id="temperature" style="padding: 10px;">Loading...</td>
+    </tr>
+    <tr>
+        <td style="width: 33%; padding: 10px;"><strong>ISP:</strong></td>
+        <td id="isp" style="padding: 10px;">Loading...</td>
+    </tr>
+    <tr>
+        <td style="width: 33%; padding: 10px;"><strong>Protocol:</strong></td>
+        <td id="protocol" style="padding: 10px;">Loading...</td>
+    </tr>
+    <tr>
+        <td style="width: 33%; padding: 10px;"><strong>Firmware Version:</strong></td>
+        <td id="revision" style="padding: 10px;">Loading...</td>
+    </tr>
+    <tr>
+        <td style="width: 33%; padding: 10px;"><strong>Comm Port:</strong></td>
+        <td id="commport" style="padding: 10px;">
+            <form method="POST" action="<%=luci.dispatcher.build_url('admin/modem/modeminfo/save_port')%>">
+                <select name="commport" id="commport-select" style="margin-bottom: 20px;">
+                    </select>
+                <button type="submit" class="btn">Save</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
 </br>          <h2>Cell Information</h2>
 <table class="table" id="signal-info-table" style="border-spacing: 10px 20px;">
     <tr>
@@ -228,11 +198,9 @@
 <form method="POST" action="<%=luci.dispatcher.build_url("admin/modem/modeminfo/set_refresh")%>">
     <label for="refresh_rate">Select Refresh Rate:</label>
     <select name="refresh_rate" id="refresh_rate" style="margin-bottom: 20px;">
+        <option value="0.5" <%=refresh_rate == "0.5" and "selected" or ""%>>0.5 seconds</option>
+        <option value="1" <%=refresh_rate == "1" and "selected" or ""%>>1 seconds</option>
         <option value="5" <%=refresh_rate == "5" and "selected" or ""%>>5 seconds</option>
-        <option value="10" <%=refresh_rate == "10" and "selected" or ""%>>10 seconds</option>
-        <option value="15" <%=refresh_rate == "15" and "selected" or ""%>>15 seconds</option>
-        <option value="30" <%=refresh_rate == "30" and "selected" or ""%>>30 seconds</option>
-        <option value="60" <%=refresh_rate == "60" and "selected" or ""%>>60 seconds</option>
     </select>
     <button type="submit" class="btn">Save Refresh Rate</button>
 </form>            <style>
