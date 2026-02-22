@@ -35,7 +35,7 @@
         </tr>
         <tr id="row-lte-rsrq" class="lte-group">
             <td style="width: 33%; padding: 10px;"><strong>LTE RSRQ:</strong></td>
-            <td id="rsrq-4g" style="padding: 10px;">
+            <td id="lte-rsrq" style="padding: 10px;">
                 <div id="lte-rsrq-progress" class="progress-bar">
                     <div class="progress-bar-inner"></div>
                     <div id="lte-rsrq-progress-value" class="progress-value">Loading...</div>
@@ -206,6 +206,7 @@
 </style>
 
 <script>
+//<![CDATA[
 let isPrivate = true;
 let refreshTimer;
 
@@ -213,7 +214,9 @@ function togglePrivacy() {
     isPrivate = !isPrivate;
     const targets = document.querySelectorAll('.sensitive-info');
     const btn = document.getElementById('toggle-privacy');
-    targets.forEach(t => isPrivate ? t.classList.add('hidden') : t.classList.remove('hidden'));
+    targets.forEach(t => {
+        if (t) t.classList.toggle('hidden', isPrivate);
+    });
     btn.innerText = isPrivate ? "Show Sensitive Info" : "Hide Sensitive Info";
 }
 
@@ -222,8 +225,11 @@ function calculatePercentage(value, min, max) {
 }
 
 function updateProgressBar(elementId, valueId, value, min, max, type = 'dbm') {
-    const bar = document.querySelector(`#${elementId} .progress-bar-inner`);
+    const barContainer = document.getElementById(elementId);
+    const bar = barContainer ? barContainer.querySelector('.progress-bar-inner') : null;
     const text = document.getElementById(valueId);
+
+    if (!bar || !text) return;
 
     if (isNaN(value) || value === null) {
         bar.style.width = '0%';
@@ -241,7 +247,6 @@ function updateProgressBar(elementId, valueId, value, min, max, type = 'dbm') {
         text.innerText = value.toFixed(1) + ' dB' + (type === 'dbm' ? 'm' : '');
     }
 
-    // Logik Warna Baru (Disesuaikan untuk RSRQ)
     bar.className = 'progress-bar-inner';
     if (percentage < 20) bar.classList.add('progress-red');
     else if (percentage < 45) bar.classList.add('progress-orange');
@@ -250,99 +255,132 @@ function updateProgressBar(elementId, valueId, value, min, max, type = 'dbm') {
 }
 
 function showRelevantRows(networkType) {
-    const net = networkType.toUpperCase();
+    const net = (networkType || '').toUpperCase();
     document.querySelectorAll('.lte-group, .nr5g-nsa-group, .nr5g-sa-group').forEach(r => r.classList.add('hidden-row'));
-    document.getElementById('row-rssi').classList.add('hidden-row');
+    const rssiRow = document.getElementById('row-rssi');
+    if (rssiRow) rssiRow.classList.add('hidden-row');
 
     if (net.includes("NR5G-SA")) {
         document.querySelectorAll('.nr5g-sa-group').forEach(r => r.classList.remove('hidden-row'));
     } else if (net.includes("NR5G-NSA")) {
         document.querySelectorAll('.lte-group, .nr5g-nsa-group').forEach(r => r.classList.remove('hidden-row'));
-        document.getElementById('row-rssi').classList.remove('hidden-row');
-    } else {
+        if (rssiRow) rssiRow.classList.remove('hidden-row');
+    } else if (net.includes("LTE")) {
         document.querySelectorAll('.lte-group').forEach(r => r.classList.remove('hidden-row'));
-        document.getElementById('row-rssi').classList.remove('hidden-row');
+        if (rssiRow) rssiRow.classList.remove('hidden-row');
+    }
+}
+
+function setText(id, value, defaultValue = 'N/A') {
+    const el = document.getElementById(id);
+    if (el) {
+        el.innerText = (value !== undefined && value !== null && value !== '') ? value : defaultValue;
+    } else {
+        console.warn('Element with id "' + id + '" not found');
     }
 }
 
 function updateModemInfo() {
-    // Guna fetch dengan timestamp untuk elak cache & bug loading
     fetch('<%=luci.dispatcher.build_url("admin/modem/modeminfo/get_info")%>?t=' + Date.now())
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error('HTTP error ' + res.status);
+            return res.json();
+        })
         .then(data => {
-            const net = data["Network"] || "No Signal";
-            document.getElementById('network').innerText = net;
-            document.getElementById('modem').innerText = data["Modem"] || "N/A";
-            document.getElementById('imei').innerText = data["IMEI"] || "N/A";
-            document.getElementById('isp').innerText = data["ISP"] || "N/A";
-            document.getElementById('revision').innerText = data["Revision"] || "N/A";
-            document.getElementById('protocol').innerText = data["Protocol"] || "N/A";
-            document.getElementById('temperature').innerText = data["Temperature"] || "N/A";
-            document.getElementById('csq').innerText = data["CSQ"] || "N/A";
-            
-            // Cell Info
-            const isSA = net.includes("SA");
-            document.getElementById('mcc').innerText = data[isSA ? "NR5G-SA MCC" : "LTE MCC"] || "-";
-            document.getElementById('mnc').innerText = data[isSA ? "NR5G-SA MNC" : "LTE MNC"] || "-";
-            document.getElementById('cellid').innerText = data[isSA ? "NR5G-SA Cell ID" : "LTE Cell ID"] || "-";
-            document.getElementById('deccellid').innerText = data[isSA ? "NR5G-SA Cell ID (Dec)" : "LTE Cell ID (Dec)"] || "-";
-            document.getElementById('pcc').innerText = data["PCC"] || "-";
-            ['scc1','scc2','scc3','scc4'].forEach(s => document.getElementById(s).innerText = data[s.toUpperCase()] || "-");
+            console.log('Received data:', data);
+
+            const net = data["Network"] || 'No Signal';
+            setText('network', net);
+            setText('modem', data["Modem"]);
+            setText('imei', data["IMEI"]);
+            setText('isp', data["ISP"]);
+            setText('revision', data["Revision"]);
+            setText('protocol', data["Protocol"]);
+            setText('temperature', data["Temperature"]);
+            setText('csq', data["CSQ"]);
+
+            // Cell Info - based on network type
+            const isSA = net.toUpperCase().includes("NR5G-SA");
+            setText('mcc', data[isSA ? "NR5G-SA MCC" : "LTE MCC"]);
+            setText('mnc', data[isSA ? "NR5G-SA MNC" : "LTE MNC"]);
+            setText('cellid', data[isSA ? "NR5G-SA Cell ID" : "LTE Cell ID"]);
+            setText('deccellid', data[isSA ? "NR5G-SA Cell ID (Dec)" : "LTE Cell ID (Dec)"]);
+
+            setText('pcc', data["PCC"] || '-');
+            ['scc1','scc2','scc3','scc4'].forEach(s => {
+                setText(s, data[s.toUpperCase()] || '-');
+            });
 
             showRelevantRows(net);
 
-            // Progress Bars - Skala RSRQ diselaraskan (-11dBm sudah Hijau)
-            updateProgressBar('signal-progress', 'signal-progress-value', parseFloat(data["Signal Strength"]), 0, 100, 'percentage');
-            updateProgressBar('rssi-progress', 'rssi-progress-value', parseFloat(data["RSSI"]), -110, -50);
-            
-            // RSRQ: -17 (Buruk) ke -7 (Cemerlang). -11 akan jadi ~60-70% (Hijau Kekuningan/Hijau)
-            updateProgressBar('lte-rsrq-progress', 'lte-rsrq-progress-value', parseFloat(data["LTE RSRQ"]), -20, -6, 'db');
-            updateProgressBar('lte-rsrp-progress', 'lte-rsrp-progress-value', parseFloat(data["LTE RSRP"]), -140, -60);
-            updateProgressBar('lte-sinr-progress', 'lte-sinr-progress-value', parseFloat(data["LTE SINR"]), -10, 30, 'db');
+            // Helper to convert strings like "-69 dBm" to number
+            const toNum = (str) => {
+                if (!str || str === 'No Signal') return NaN;
+                const num = parseFloat(str);
+                return isNaN(num) ? NaN : num;
+            };
 
-            updateProgressBar('nr5g-nsa-rsrq-progress', 'nr5g-nsa-rsrq-progress-value', parseFloat(data["NR5G-NSA RSRQ"]), -20, -6, 'db');
-            updateProgressBar('nr5g-nsa-rsrp-progress', 'nr5g-nsa-rsrp-progress-value', parseFloat(data["NR5G-NSA RSRP"]), -140, -60);
-            updateProgressBar('nr5g-nsa-sinr-progress', 'nr5g-nsa-sinr-progress-value', parseFloat(data["NR5G-NSA SINR"]), -10, 30, 'db');
+            updateProgressBar('signal-progress', 'signal-progress-value', toNum(data["Signal Strength"]), 0, 100, 'percentage');
+            updateProgressBar('rssi-progress', 'rssi-progress-value', toNum(data["RSSI"]), -110, -50);
+            updateProgressBar('lte-rsrq-progress', 'lte-rsrq-progress-value', toNum(data["LTE RSRQ"]), -20, -6, 'db');
+            updateProgressBar('lte-rsrp-progress', 'lte-rsrp-progress-value', toNum(data["LTE RSRP"]), -140, -60);
+            updateProgressBar('lte-sinr-progress', 'lte-sinr-progress-value', toNum(data["LTE SINR"]), -10, 30, 'db');
+            updateProgressBar('nr5g-nsa-rsrq-progress', 'nr5g-nsa-rsrq-progress-value', toNum(data["NR5G-NSA RSRQ"]), -20, -6, 'db');
+            updateProgressBar('nr5g-nsa-rsrp-progress', 'nr5g-nsa-rsrp-progress-value', toNum(data["NR5G-NSA RSRP"]), -140, -60);
+            updateProgressBar('nr5g-nsa-sinr-progress', 'nr5g-nsa-sinr-progress-value', toNum(data["NR5G-NSA SINR"]), -10, 30, 'db');
+            updateProgressBar('nr5g-sa-rsrq-progress', 'nr5g-sa-rsrq-progress-value', toNum(data["NR5G-SA RSRQ"]), -20, -6, 'db');
+            updateProgressBar('nr5g-sa-rsrp-progress', 'nr5g-sa-rsrp-progress-value', toNum(data["NR5G-SA RSRP"]), -140, -60);
+            updateProgressBar('nr5g-sa-sinr-progress', 'nr5g-sa-sinr-progress-value', toNum(data["NR5G-SA SINR"]), -10, 30, 'db');
 
-            updateProgressBar('nr5g-sa-rsrq-progress', 'nr5g-sa-rsrq-progress-value', parseFloat(data["NR5G-SA RSRQ"]), -20, -6, 'db');
-            updateProgressBar('nr5g-sa-rsrp-progress', 'nr5g-sa-rsrp-progress-value', parseFloat(data["NR5G-SA RSRP"]), -140, -60);
-            updateProgressBar('nr5g-sa-sinr-progress', 'nr5g-sa-sinr-progress-value', parseFloat(data["NR5G-SA SINR"]), -10, 30, 'db');
-            
-            // Re-schedule next update (Fix bug loading)
             scheduleUpdate();
         })
         .catch(err => {
-            console.error(err);
+            console.error('Failed to fetch modem info:', err);
+            setText('network', 'Error loading data');
             scheduleUpdate();
         });
 }
 
 function scheduleUpdate() {
     clearTimeout(refreshTimer);
-    let rate = parseFloat("<%=refresh_rate%>") * 1000;
-    if (isNaN(rate) || rate < 500) rate = 2000; 
-    refreshTimer = setTimeout(updateModemInfo, rate);
+    let rate = parseFloat("<%=refresh_rate%>");
+    if (isNaN(rate) || rate < 0.5) rate = 2; // default 2 seconds
+    refreshTimer = setTimeout(updateModemInfo, rate * 1000);
 }
 
 function fetchCommPorts() {
     fetch('<%=luci.dispatcher.build_url("admin/modem/modeminfo/get_ports_info")%>')
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error('HTTP error ' + res.status);
+            return res.json();
+        })
         .then(data => {
             const select = document.getElementById("commport-select");
-            const saved = "<%=saved_comm%>";
-            data.ports.forEach(p => {
+            if (!select) return;
+            select.innerHTML = '';
+            // Escape saved_comm to avoid JavaScript injection (though unlikely)
+            let saved = "<%=saved_comm%>";
+            (data.ports || []).forEach(p => {
                 const opt = new Option(p, p);
                 if (p === saved) opt.selected = true;
                 select.add(opt);
             });
+        })
+        .catch(err => {
+            console.error('Failed to fetch comm ports:', err);
+            const select = document.getElementById("commport-select");
+            if (select) {
+                select.innerHTML = '<option value="">Error loading ports</option>';
+            }
         });
 }
 
 window.onload = function() {
     fetchCommPorts();
-    togglePrivacy(); // Start with hidden
+    togglePrivacy();
     updateModemInfo();
 };
+//]]>
 </script>
 
 <%+footer%>
