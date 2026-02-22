@@ -1,487 +1,348 @@
 <%+header%>
 
-<h2>Signal Information</h2>
-<table class="table" id="signal-info-table" style="border-spacing: 10px 20px;">
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>Network:</strong></td>
-        <td id="network" style="padding: 10px;">Loading...</td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>CSQ:</strong></td>
-        <td id="csq" style="padding: 10px;">Loading...</td>
-    </tr>                
-<tr id="row-signal-strength">
-    <td style="width: 33%; padding: 10px;"><strong>Signal Strength:</strong></td>
-    <td id="signal-strength" style="padding: 10px;">
-        <div id="signal-progress" class="progress-bar">
-            <div class="progress-bar-inner"></div>
-            <div id="signal-progress-value" class="progress-value">Loading...</div>
-        </div>
-    </td>
-</tr>
-<tr id="row-rssi">
-    <td style="width: 33%; padding: 10px;"><strong>RSSI:</strong></td>
-    <td id="rssi" style="padding: 10px;">
-        <div id="rssi-progress" class="progress-bar">
-            <div class="progress-bar-inner"></div>
-            <div id="rssi-progress-value" class="progress-value">Loading...</div>
-        </div>
-    </td>
-</tr>
-<tr id="row-lte-rsrq" class="lte-group">
-    <td style="width: 33%; padding: 10px;"><strong>LTE RSRQ:</strong></td>
-    <td id="rsrq-4g" style="padding: 10px;">
-        <div id="lte-rsrq-progress" class="progress-bar">
-            <div class="progress-bar-inner"></div>
-            <div id="lte-rsrq-progress-value" class="progress-value">Loading...</div>
-        </div>
-    </td>
-</tr>
-<tr id="row-lte-rsrp" class="lte-group">
-    <td style="width: 33%; padding: 10px;"><strong>LTE RSRP:</strong></td>
-    <td id="lte-rsrp" style="padding: 10px;">
-        <div id="lte-rsrp-progress" class="progress-bar">
-            <div class="progress-bar-inner"></div>
-            <div id="lte-rsrp-progress-value" class="progress-value">Loading...</div>
-        </div>
-    </td>
-</tr>
-<tr id="row-lte-sinr" class="lte-group">
-    <td style="width: 33%; padding: 10px;"><strong>LTE SINR:</strong></td>
-    <td id="lte-sinr" style="padding: 10px;">
-        <div id="lte-sinr-progress" class="progress-bar">
-            <div class="progress-bar-inner"></div>
-            <div id="lte-sinr-progress-value" class="progress-value">Loading...</div>
-        </div>
-    </td>
-</tr>
-<tr id="row-nr5g-nsa-rsrq" class="nr5g-nsa-group">
-    <td style="width: 33%; padding: 10px;"><strong>NR5G-NSA RSRQ:</strong></td>
-    <td id="nr5g-nsa-rsrq" style="padding: 10px;">
-        <div id="nr5g-nsa-rsrq-progress" class="progress-bar">
-            <div class="progress-bar-inner"></div>
-            <div id="nr5g-nsa-rsrq-progress-value" class="progress-value">Loading...</div>
-        </div>
-    </td>
-</tr>
-<tr id="row-nr5g-nsa-rsrp" class="nr5g-nsa-group">
-    <td style="width: 33%; padding: 10px;"><strong>NR5G-NSA RSRP:</strong></td>
-    <td id="nr5g-nsa-rsrp" style="padding: 10px;">
-        <div id="nr5g-nsa-rsrp-progress" class="progress-bar">
-            <div class="progress-bar-inner"></div>
-            <div id="nr5g-nsa-rsrp-progress-value" class="progress-value">Loading...</div>
-        </div>
-    </td>
-</tr>
-<tr id="row-nr5g-nsa-sinr" class="nr5g-nsa-group">
-    <td style="width: 33%; padding: 10px;"><strong>NR5G-NSA SINR:</strong></td>
-    <td id="nr5g-nsa-sinr" style="padding: 10px;">
-        <div id="nr5g-nsa-sinr-progress" class="progress-bar">
-            <div class="progress-bar-inner"></div>
-            <div id="nr5g-nsa-sinr-progress-value" class="progress-value">Loading...</div>
-        </div>
-    </td>
-</tr>
-<tr id="row-nr5g-sa-rsrq" class="nr5g-sa-group">
-    <td style="width: 33%; padding: 10px;"><strong>NR5G-SA RSRQ:</strong></td>
-    <td id="nr5g-sa-rsrq" style="padding: 10px;">
-        <div id="nr5g-sa-rsrq-progress" class="progress-bar">
-            <div class="progress-bar-inner"></div>
-            <div id="nr5g-sa-rsrq-progress-value" class="progress-value">Loading...</div>
-        </div>
-    </td>
-</tr>
-<tr id="row-nr5g-sa-rsrp" class="nr5g-sa-group">
-    <td style="width: 33%; padding: 10px;"><strong>NR5G-SA RSRP:</strong></td>
-    <td id="nr5g-sa-rsrp" style="padding: 10px;">
-        <div id="nr5g-sa-rsrp-progress" class="progress-bar">
-            <div class="progress-bar-inner"></div>
-            <div id="nr5g-sa-rsrp-progress-value" class="progress-value">Loading...</div>
-        </div>
-    </td>
-</tr>
-<tr id="row-nr5g-sa-sinr" class="nr5g-sa-group">
-    <td style="width: 33%; padding: 10px;"><strong>NR5G-SA SINR:</strong></td>
-    <td id="nr5g-sa-sinr" style="padding: 10px;">
-        <div id="nr5g-sa-sinr-progress" class="progress-bar">
-            <div class="progress-bar-inner"></div>
-            <div id="nr5g-sa-sinr-progress-value" class="progress-value">Loading...</div>
-        </div>
-    </td>
-</tr>
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>Signal Information</h2>
+        <button id="toggle-privacy" class="btn" onclick="togglePrivacy()">Show Sensitive Info</button>
+    </div>
 
-</table>
-<h1>General Information</h1>
-<table class="table" id="general-info-table" style="border-spacing: 10px 20px;">
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>Modem:</strong></td>
-        <td id="modem" style="padding: 10px;">Loading...</td>
-    </tr>
-    <tr></tr>
-        <td style="width: 33%; padding: 10px;"><strong>IMEI:</strong></td>
-        <td id="imei" style="padding: 10px;">Loading...</td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>Temperature:</strong></td>
-        <td id="temperature" style="padding: 10px;">Loading...</td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>ISP:</strong></td>
-        <td id="isp" style="padding: 10px;">Loading...</td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>Protocol:</strong></td>
-        <td id="protocol" style="padding: 10px;">Loading...</td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>Firmware Version:</strong></td>
-        <td id="revision" style="padding: 10px;">Loading...</td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>Comm Port:</strong></td>
-        <td id="commport" style="padding: 10px;">
-            <form method="POST" action="<%=luci.dispatcher.build_url('admin/modem/modeminfo/save_port')%>">
-                <select name="commport" id="commport-select" style="margin-bottom: 20px;">
-                    </select>
-                <button type="submit" class="btn">Save</button>
-            </form>
-        </td>
-    </tr>
-</table>
+    <table class="table" id="signal-info-table" style="border-spacing: 10px 20px;">
+        <tr>
+            <td style="width: 33%; padding: 10px;"><strong>Network:</strong></td>
+            <td id="network" style="padding: 10px;">Loading...</td>
+        </tr>
+        <tr>
+            <td style="width: 33%; padding: 10px;"><strong>CSQ:</strong></td>
+            <td id="csq" style="padding: 10px;">Loading...</td>
+        </tr>                
+        <tr id="row-signal-strength">
+            <td style="width: 33%; padding: 10px;"><strong>Signal Strength:</strong></td>
+            <td id="signal-strength" style="padding: 10px;">
+                <div id="signal-progress" class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                    <div id="signal-progress-value" class="progress-value">Loading...</div>
+                </div>
+            </td>
+        </tr>
+        <tr id="row-rssi">
+            <td style="width: 33%; padding: 10px;"><strong>RSSI:</strong></td>
+            <td id="rssi" style="padding: 10px;">
+                <div id="rssi-progress" class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                    <div id="rssi-progress-value" class="progress-value">Loading...</div>
+                </div>
+            </td>
+        </tr>
+        <tr id="row-lte-rsrq" class="lte-group">
+            <td style="width: 33%; padding: 10px;"><strong>LTE RSRQ:</strong></td>
+            <td id="rsrq-4g" style="padding: 10px;">
+                <div id="lte-rsrq-progress" class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                    <div id="lte-rsrq-progress-value" class="progress-value">Loading...</div>
+                </div>
+            </td>
+        </tr>
+        <tr id="row-lte-rsrp" class="lte-group">
+            <td style="width: 33%; padding: 10px;"><strong>LTE RSRP:</strong></td>
+            <td id="lte-rsrp" style="padding: 10px;">
+                <div id="lte-rsrp-progress" class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                    <div id="lte-rsrp-progress-value" class="progress-value">Loading...</div>
+                </div>
+            </td>
+        </tr>
+        <tr id="row-lte-sinr" class="lte-group">
+            <td style="width: 33%; padding: 10px;"><strong>LTE SINR:</strong></td>
+            <td id="lte-sinr" style="padding: 10px;">
+                <div id="lte-sinr-progress" class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                    <div id="lte-sinr-progress-value" class="progress-value">Loading...</div>
+                </div>
+            </td>
+        </tr>
+        <tr id="row-nr5g-nsa-rsrq" class="nr5g-nsa-group">
+            <td style="width: 33%; padding: 10px;"><strong>NR5G-NSA RSRQ:</strong></td>
+            <td id="nr5g-nsa-rsrq" style="padding: 10px;">
+                <div id="nr5g-nsa-rsrq-progress" class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                    <div id="nr5g-nsa-rsrq-progress-value" class="progress-value">Loading...</div>
+                </div>
+            </td>
+        </tr>
+        <tr id="row-nr5g-nsa-rsrp" class="nr5g-nsa-group">
+            <td style="width: 33%; padding: 10px;"><strong>NR5G-NSA RSRP:</strong></td>
+            <td id="nr5g-nsa-rsrp" style="padding: 10px;">
+                <div id="nr5g-nsa-rsrp-progress" class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                    <div id="nr5g-nsa-rsrp-progress-value" class="progress-value">Loading...</div>
+                </div>
+            </td>
+        </tr>
+        <tr id="row-nr5g-nsa-sinr" class="nr5g-nsa-group">
+            <td style="width: 33%; padding: 10px;"><strong>NR5G-NSA SINR:</strong></td>
+            <td id="nr5g-nsa-sinr" style="padding: 10px;">
+                <div id="nr5g-nsa-sinr-progress" class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                    <div id="nr5g-nsa-sinr-progress-value" class="progress-value">Loading...</div>
+                </div>
+            </td>
+        </tr>
+        <tr id="row-nr5g-sa-rsrq" class="nr5g-sa-group">
+            <td style="width: 33%; padding: 10px;"><strong>NR5G-SA RSRQ:</strong></td>
+            <td id="nr5g-sa-rsrq" style="padding: 10px;">
+                <div id="nr5g-sa-rsrq-progress" class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                    <div id="nr5g-sa-rsrq-progress-value" class="progress-value">Loading...</div>
+                </div>
+            </td>
+        </tr>
+        <tr id="row-nr5g-sa-rsrp" class="nr5g-sa-group">
+            <td style="width: 33%; padding: 10px;"><strong>NR5G-SA RSRP:</strong></td>
+            <td id="nr5g-sa-rsrp" style="padding: 10px;">
+                <div id="nr5g-sa-rsrp-progress" class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                    <div id="nr5g-sa-rsrp-progress-value" class="progress-value">Loading...</div>
+                </div>
+            </td>
+        </tr>
+        <tr id="row-nr5g-sa-sinr" class="nr5g-sa-group">
+            <td style="width: 33%; padding: 10px;"><strong>NR5G-SA SINR:</strong></td>
+            <td id="nr5g-sa-sinr" style="padding: 10px;">
+                <div id="nr5g-sa-sinr-progress" class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                    <div id="nr5g-sa-sinr-progress-value" class="progress-value">Loading...</div>
+                </div>
+            </td>
+        </tr>
+    </table>
 
-</br>          <h2>Cell Information</h2>
-<table class="table" id="signal-info-table" style="border-spacing: 10px 20px;">
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>MCC/MNC:</strong></td>
-        <td id="mcc-mnc-combined" style="padding: 10px;">
-            <span id="mcc">Loading...</span> <span id="mnc">Loading...</span>
-        </td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>Cell ID:</strong></td>
-        <td id="cellid-combined" style="padding: 10px;">
-            <span id="cellid">Loading...</span> (<span id="deccellid">Loading...</span>)
-        </td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>PCC: (Band / PCI / EARFCN)</strong></td>
-        <td id="pcc_td" style="padding: 10px;">
-            <span id="pcc">Loading...</span>
-        </td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>SCC 1:</strong></td>
-        <td id="scc1_td" style="padding: 10px;">
-            <span id="scc1">Loading...</span>
-        </td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>SCC 2:</strong></td>
-        <td id="scc2_td" style="padding: 10px;">
-            <span id="scc2">Loading...</span>
-        </td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>SCC 3:</strong></td>
-        <td id="scc3_td" style="padding: 10px;">
-            <span id="scc3">Loading...</span>
-        </td>
-    </tr>
-    <tr>
-        <td style="width: 33%; padding: 10px;"><strong>SCC 4:</strong></td>
-        <td id="scc4_td" style="padding: 10px;">
-            <span id="scc4">Loading...</span>
-        </td>
-    </tr>
-</table>
-</br>          <h2>Refresh Interval</h2>
-<form method="POST" action="<%=luci.dispatcher.build_url("admin/modem/modeminfo/set_refresh")%>">
-    <label for="refresh_rate">Select Refresh Rate:</label>
-    <select name="refresh_rate" id="refresh_rate" style="margin-bottom: 20px;">
-        <option value="0.5" <%=refresh_rate == "0.5" and "selected" or ""%>>0.5 seconds</option>
-        <option value="1" <%=refresh_rate == "1" and "selected" or ""%>>1 seconds</option>
-        <option value="5" <%=refresh_rate == "5" and "selected" or ""%>>5 seconds</option>
-    </select>
-    <button type="submit" class="btn">Save Refresh Rate</button>
-</form>            <style>
-    /* Progress bar container */
-    .progress-bar {
-        width: 100%;
-        background-color: #ddd;
-        height: 20px;
-        border-radius: 5px;
-        position: relative;
-        margin: 5px 0;
-        overflow: hidden;
-    }
+    <br><h1>General Information</h1>
+    <table class="table" id="general-info-table" style="border-spacing: 10px 20px;">
+        <tr>
+            <td style="width: 33%; padding: 10px;"><strong>Modem:</strong></td>
+            <td id="modem" style="padding: 10px;">Loading...</td>
+        </tr>
+        <tr>
+            <td style="width: 33%; padding: 10px;"><strong>IMEI:</strong></td>
+            <td style="padding: 10px;"><span class="sensitive-info" id="imei">Loading...</span></td>
+        </tr>
+        <tr>
+            <td style="width: 33%; padding: 10px;"><strong>Temperature:</strong></td>
+            <td id="temperature" style="padding: 10px;">Loading...</td>
+        </tr>
+        <tr>
+            <td style="width: 33%; padding: 10px;"><strong>ISP:</strong></td>
+            <td id="isp" style="padding: 10px;">Loading...</td>
+        </tr>
+        <tr>
+            <td style="width: 33%; padding: 10px;"><strong>Protocol:</strong></td>
+            <td id="protocol" style="padding: 10px;">Loading...</td>
+        </tr>
+        <tr>
+            <td style="width: 33%; padding: 10px;"><strong>Firmware Version:</strong></td>
+            <td id="revision" style="padding: 10px;">Loading...</td>
+        </tr>
+        <tr>
+            <td style="width: 33%; padding: 10px;"><strong>Comm Port:</strong></td>
+            <td id="commport" style="padding: 10px;">
+                <form method="POST" action="<%=luci.dispatcher.build_url('admin/modem/modeminfo/save_port')%>">
+                    <select name="commport" id="commport-select" style="margin-bottom: 5px;"></select>
+                    <button type="submit" class="btn">Save</button>
+                </form>
+            </td>
+        </tr>
+    </table>
 
-    /* Progress bar inner filling */
-    .progress-bar-inner {
-        height: 100%;
-        border-radius: 5px;
-        transition: width 0.4s ease;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1; /* Behind the text */
-    }
+    <br><h2>Cell Information</h2>
+    <table class="table" style="border-spacing: 10px 20px;">
+        <tr>
+            <td style="width: 33%; padding: 10px;"><strong>MCC/MNC:</strong></td>
+            <td style="padding: 10px;"><span id="mcc">Loading...</span> <span id="mnc">Loading...</span></td>
+        </tr>
+        <tr>
+            <td style="width: 33%; padding: 10px;"><strong>Cell ID:</strong></td>
+            <td style="padding: 10px;">
+                <span class="sensitive-info" id="cellid-combined">
+                    <span id="cellid">Loading...</span> (<span id="deccellid">Loading...</span>)
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 33%; padding: 10px;"><strong>PCC: (Band / PCI / EARFCN)</strong></td>
+            <td id="pcc" style="padding: 10px;">Loading...</td>
+        </tr>
+        <tr>
+            <td style="width: 33%; padding: 10px;"><strong>SCC 1-4:</strong></td>
+            <td style="padding: 10px;">
+                <div id="scc1">-</div><div id="scc2">-</div><div id="scc3">-</div><div id="scc4">-</div>
+            </td>
+        </tr>
+    </table>
 
-    /* Progress bar value (the text inside the progress bar) */
-    .progress-value {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        color: #000; /* Black color for better visibility */
-        font-weight: bold;
-        line-height: 20px; /* Vertically centers the text */
-        z-index: 2; /* On top of the progress bar */
-        text-align: center;
-        width: 100%;
-    }
+    <br><h2>Refresh Interval</h2>
+    <form method="POST" action="<%=luci.dispatcher.build_url("admin/modem/modeminfo/set_refresh")%>">
+        <label for="refresh_rate">Select Refresh Rate:</label>
+        <select name="refresh_rate" id="refresh_rate">
+            <option value="0.5" <%=refresh_rate == "0.5" and "selected" or ""%>>0.5 seconds</option>
+            <option value="1" <%=refresh_rate == "1" and "selected" or ""%>>1 seconds</option>
+            <option value="5" <%=refresh_rate == "5" and "selected" or ""%>>5 seconds</option>
+        </select>
+        <button type="submit" class="btn">Save Refresh Rate</button>
+    </form>
+</div>
+
+<style>
+    .progress-bar { width: 100%; background-color: #ddd; height: 22px; border-radius: 5px; position: relative; overflow: hidden; }
+    .progress-bar-inner { height: 100%; transition: width 0.3s ease; position: absolute; top: 0; left: 0; z-index: 1; }
+    .progress-value { position: absolute; top: 0; left: 0; width: 100%; color: #000; font-weight: bold; line-height: 22px; z-index: 2; text-align: center; }
+    .hidden-row { display: none !important; }
+    .sensitive-info.hidden { filter: blur(5px); pointer-events: none; user-select: none; }
     
-    /* CSS to hide rows */
-    .hidden-row {
-        display: none;
-    }
+    /* Warna yang diubahsuai */
+    .progress-red { background-color: #ff4d4d; }
+    .progress-orange { background-color: #ffa500; }
+    .progress-yellow { background-color: #ffff66; }
+    .progress-green { background-color: #2ecc71; }
+</style>
 
-    /* Colors for progress bar */
-    .progress-red { background-color: red; }
-    .progress-orange { background-color: orange; }
-    .progress-yellow { background-color: yellow; }
-    .progress-green { background-color: lime; }
-</style>              <script>
-// Function to calculate percentage based on min and max values
+<script>
+let isPrivate = true;
+let refreshTimer;
+
+function togglePrivacy() {
+    isPrivate = !isPrivate;
+    const targets = document.querySelectorAll('.sensitive-info');
+    const btn = document.getElementById('toggle-privacy');
+    targets.forEach(t => isPrivate ? t.classList.add('hidden') : t.classList.remove('hidden'));
+    btn.innerText = isPrivate ? "Show Sensitive Info" : "Hide Sensitive Info";
+}
+
 function calculatePercentage(value, min, max) {
     return Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
 }
 
-// Function to update a progress bar based on value and color range
-function updateProgressBar(elementId, valueId, value, min, max, isPercentage = false) {
-    const progressBarInner = document.querySelector(`#${elementId} .progress-bar-inner`);
-    const progressValue = document.getElementById(valueId);
+function updateProgressBar(elementId, valueId, value, min, max, type = 'dbm') {
+    const bar = document.querySelector(`#${elementId} .progress-bar-inner`);
+    const text = document.getElementById(valueId);
 
-    // If the value is not a number or out of valid range, set "No Signal"
-    if (isNaN(value) || value === null || value === "No Signal") {
-        progressBarInner.style.width = '0%';
-        progressValue.innerText = 'No Signal';
-        progressBarInner.className = 'progress-bar-inner';  // Reset any color class
+    if (isNaN(value) || value === null) {
+        bar.style.width = '0%';
+        text.innerText = 'No Signal';
+        bar.className = 'progress-bar-inner';
         return;
     }
 
-    // Calculate the percentage
     const percentage = calculatePercentage(value, min, max);
-
-    // Set the width of the inner bar based on the calculated percentage
-    progressBarInner.style.width = `${percentage}%`;
-
-    // Display percentage for Signal Strength (CSQ) and dBm for other metrics
-    if (isPercentage) {
-        progressValue.innerText = `${percentage.toFixed(1)}%`;  // Show as percentage
+    bar.style.width = percentage + '%';
+    
+    if (type === 'percentage') {
+        text.innerText = value.toFixed(0) + '%';
     } else {
-        progressValue.innerText = `${value.toFixed(1)} dBm`;  // Show as dBm
+        text.innerText = value.toFixed(1) + ' dB' + (type === 'dbm' ? 'm' : '');
     }
 
-    // Determine the color based on the percentage
-    let colorClass = '';
-    if (percentage <= 25) {
-        colorClass = 'progress-red';
-    } else if (percentage <= 50) {
-        colorClass = 'progress-orange';
-    } else if (percentage <= 79) {
-        colorClass = 'progress-yellow';
-    } else {
-        colorClass = 'progress-green';
-    }
-
-    // Apply the color class to the progress bar
-    progressBarInner.className = `progress-bar-inner ${colorClass}`;
+    // Logik Warna Baru (Disesuaikan untuk RSRQ)
+    bar.className = 'progress-bar-inner';
+    if (percentage < 20) bar.classList.add('progress-red');
+    else if (percentage < 45) bar.classList.add('progress-orange');
+    else if (percentage < 65) bar.classList.add('progress-yellow');
+    else bar.classList.add('progress-green');
 }
 
-// Function to show/hide rows based on network type
 function showRelevantRows(networkType) {
-    const allGroups = ['lte-group', 'nr5g-nsa-group', 'nr5g-sa-group'];
-
-    // Hide all groups and the RSSI row first
-    allGroups.forEach(groupClass => {
-        document.querySelectorAll(`.${groupClass}`).forEach(row => {
-            row.classList.add('hidden-row');
-        });
-    });
+    const net = networkType.toUpperCase();
+    document.querySelectorAll('.lte-group, .nr5g-nsa-group, .nr5g-sa-group').forEach(r => r.classList.add('hidden-row'));
     document.getElementById('row-rssi').classList.add('hidden-row');
 
-    // Show groups based on the detected network type
-    if (networkType.includes("NR5G-SA")) {
-        document.querySelectorAll('.nr5g-sa-group').forEach(row => {
-            row.classList.remove('hidden-row');
-        });
-    } else if (networkType.includes("NR5G-NSA")) {
-        document.querySelectorAll('.lte-group, .nr5g-nsa-group').forEach(row => {
-            row.classList.remove('hidden-row');
-        });
-        document.getElementById('row-rssi').classList.remove('hidden-row'); // Show RSSI for NSA
-    } else if (networkType.includes("LTE")) {
-        document.querySelectorAll('.lte-group').forEach(row => {
-            row.classList.remove('hidden-row');
-        });
-        document.getElementById('row-rssi').classList.remove('hidden-row'); // Show RSSI for LTE
+    if (net.includes("NR5G-SA")) {
+        document.querySelectorAll('.nr5g-sa-group').forEach(r => r.classList.remove('hidden-row'));
+    } else if (net.includes("NR5G-NSA")) {
+        document.querySelectorAll('.lte-group, .nr5g-nsa-group').forEach(r => r.classList.remove('hidden-row'));
+        document.getElementById('row-rssi').classList.remove('hidden-row');
+    } else {
+        document.querySelectorAll('.lte-group').forEach(r => r.classList.remove('hidden-row'));
+        document.getElementById('row-rssi').classList.remove('hidden-row');
     }
 }
 
-// Function to get the correct data based on network type
-function getNetworkData(data) {
-    // Check if NR5G-SA is the current network
-    if (data["Network"].includes("NR5G-SA")) {
-        return {
-            mcc: data["NR5G-SA MCC"] || "No Signal",
-            mnc: data["NR5G-SA MNC"] || "No Signal",
-            cellid: data["NR5G-SA Cell ID"] || "No Signal",
-            deccellid: data["NR5G-SA Cell ID (Dec)"] || "No Signal"
-        };
-    }
-    // Check if NR5G-NSA is the current network
-    else if (data["Network"].includes("NR5G-NSA")) {
-        return {
-            mcc: data["NR5G-NSA MCC"] || "No Signal",
-            mnc: data["NR5G-NSA MNC"] || "No Signal",
-            cellid: data["LTE Cell ID"] || "No Signal",
-            deccellid: data["LTE Cell ID (Dec)"] || "No Signal"
-        };
-    }
-    // Check if LTE is the current network
-    else if (data["Network"].includes("LTE")) {
-        return {
-            mcc: data["LTE MCC"] || "No Signal",
-            mnc: data["LTE MNC"] || "No Signal",
-            cellid: data["LTE Cell ID"] || "No Signal",
-            deccellid: data["LTE Cell ID (Dec)"] || "No Signal"
-        };
-    }
-    // Default for other or unknown networks
-    else {
-        return {
-            mcc: "No Signal",
-            mnc: "No Signal",
-            cellid: "No Signal",
-            deccellid: "No Signal"
-        };
-    }
-}
-
-
-// Update function to refresh data
 function updateModemInfo() {
-    fetch('<%=luci.dispatcher.build_url("admin/modem/modeminfo/get_info")%>')
-        .then(response => response.json())
+    // Guna fetch dengan timestamp untuk elak cache & bug loading
+    fetch('<%=luci.dispatcher.build_url("admin/modem/modeminfo/get_info")%>?t=' + Date.now())
+        .then(res => res.json())
         .then(data => {
-            // Get the network data
-            const networkInfo = getNetworkData(data);
-            
-            // Update plain text fields (Network and CSQ)
-            const network = data["Network"] || "No Signal";
+            const net = data["Network"] || "No Signal";
+            document.getElementById('network').innerText = net;
             document.getElementById('modem').innerText = data["Modem"] || "N/A";
             document.getElementById('imei').innerText = data["IMEI"] || "N/A";
             document.getElementById('isp').innerText = data["ISP"] || "N/A";
             document.getElementById('revision').innerText = data["Revision"] || "N/A";
             document.getElementById('protocol').innerText = data["Protocol"] || "N/A";
             document.getElementById('temperature').innerText = data["Temperature"] || "N/A";
-            document.getElementById('network').innerText = network;
-            document.getElementById('csq').innerText = data["CSQ"] || "No Signal";
-            document.getElementById('mcc').innerText = networkInfo.mcc;
-            document.getElementById('mnc').innerText = networkInfo.mnc;
-            document.getElementById('cellid').innerText = networkInfo.cellid;
-            document.getElementById('deccellid').innerText = networkInfo.deccellid;
+            document.getElementById('csq').innerText = data["CSQ"] || "N/A";
+            
+            // Cell Info
+            const isSA = net.includes("SA");
+            document.getElementById('mcc').innerText = data[isSA ? "NR5G-SA MCC" : "LTE MCC"] || "-";
+            document.getElementById('mnc').innerText = data[isSA ? "NR5G-SA MNC" : "LTE MNC"] || "-";
+            document.getElementById('cellid').innerText = data[isSA ? "NR5G-SA Cell ID" : "LTE Cell ID"] || "-";
+            document.getElementById('deccellid').innerText = data[isSA ? "NR5G-SA Cell ID (Dec)" : "LTE Cell ID (Dec)"] || "-";
             document.getElementById('pcc').innerText = data["PCC"] || "-";
-            document.getElementById('scc1').innerText = data["SCC1"] || "-";
-            document.getElementById('scc2').innerText = data["SCC2"] || "-";
-            document.getElementById('scc3').innerText = data["SCC3"] || "-";
-            document.getElementById('scc4').innerText = data["SCC4"] || "-";
+            ['scc1','scc2','scc3','scc4'].forEach(s => document.getElementById(s).innerText = data[s.toUpperCase()] || "-");
 
-            // Show or hide relevant rows based on network type
-            showRelevantRows(network);
+            showRelevantRows(net);
 
-            // Update progress bars for relevant metrics
-            const csqper = parseFloat(data["Signal Strength"]);
-            const rssi = parseFloat(data["RSSI"]);
-            const lte_rsrq = parseFloat(data["LTE RSRQ"]);
-            const lte_rsrp = parseFloat(data["LTE RSRP"]);
-            const lte_sinr = parseFloat(data["LTE SINR"]);
-            const nr5g_nsa_rsrq = parseFloat(data["NR5G-NSA RSRQ"]);
-            const nr5g_nsa_rsrp = parseFloat(data["NR5G-NSA RSRP"]);
-            const nr5g_nsa_sinr = parseFloat(data["NR5G-NSA SINR"]);
-            const nr5g_sa_rsrq = parseFloat(data["NR5G-SA RSRQ"]);
-            const nr5g_sa_rsrp = parseFloat(data["NR5G-SA RSRP"]);
-            const nr5g_sa_sinr = parseFloat(data["NR5G-SA SINR"]);
+            // Progress Bars - Skala RSRQ diselaraskan (-11dBm sudah Hijau)
+            updateProgressBar('signal-progress', 'signal-progress-value', parseFloat(data["Signal Strength"]), 0, 100, 'percentage');
+            updateProgressBar('rssi-progress', 'rssi-progress-value', parseFloat(data["RSSI"]), -110, -50);
+            
+            // RSRQ: -17 (Buruk) ke -7 (Cemerlang). -11 akan jadi ~60-70% (Hijau Kekuningan/Hijau)
+            updateProgressBar('lte-rsrq-progress', 'lte-rsrq-progress-value', parseFloat(data["LTE RSRQ"]), -20, -6, 'db');
+            updateProgressBar('lte-rsrp-progress', 'lte-rsrp-progress-value', parseFloat(data["LTE RSRP"]), -140, -60);
+            updateProgressBar('lte-sinr-progress', 'lte-sinr-progress-value', parseFloat(data["LTE SINR"]), -10, 30, 'db');
 
-            // Signal Strength should be in percentage
-            updateProgressBar('signal-progress', 'signal-progress-value', csqper, 0, 99, 'percentage');  // Signal Strength
-            updateProgressBar('rssi-progress', 'rssi-progress-value', rssi, -110, -50);  // RSSI
-            updateProgressBar('lte-rsrq-progress', 'lte-rsrq-progress-value', lte_rsrq, -20, 3);  // RSRQ 4G
-            updateProgressBar('lte-rsrp-progress', 'lte-rsrp-progress-value', lte_rsrp, -140, -44);  // RSRP 4G
-            updateProgressBar('lte-sinr-progress', 'lte-sinr-progress-value', lte_sinr, -20, 30);  // SINR 4G
-            updateProgressBar('nr5g-nsa-rsrq-progress', 'nr5g-nsa-rsrq-progress-value', nr5g_nsa_rsrq, -20, 3);  // RSRQ 5G NSA
-            updateProgressBar('nr5g-nsa-rsrp-progress', 'nr5g-nsa-rsrp-progress-value', nr5g_nsa_rsrp, -140, -44);  // RSRP 5G NSA
-            updateProgressBar('nr5g-nsa-sinr-progress', 'nr5g-nsa-sinr-progress-value', nr5g_nsa_sinr, -20, 30);  // SINR 5G NSA
-            updateProgressBar('nr5g-sa-rsrq-progress', 'nr5g-sa-rsrq-progress-value', nr5g_sa_rsrq, -20, 3);  // RSRQ 5G SA
-            updateProgressBar('nr5g-sa-rsrp-progress', 'nr5g-sa-rsrp-progress-value', nr5g_sa_rsrp, -140, -44);  // RSRP 5G SA
-            updateProgressBar('nr5g-sa-sinr-progress', 'nr5g-sa-sinr-progress-value', nr5g_sa_sinr, -20, 30);  // SINR 5G SA
+            updateProgressBar('nr5g-nsa-rsrq-progress', 'nr5g-nsa-rsrq-progress-value', parseFloat(data["NR5G-NSA RSRQ"]), -20, -6, 'db');
+            updateProgressBar('nr5g-nsa-rsrp-progress', 'nr5g-nsa-rsrp-progress-value', parseFloat(data["NR5G-NSA RSRP"]), -140, -60);
+            updateProgressBar('nr5g-nsa-sinr-progress', 'nr5g-nsa-sinr-progress-value', parseFloat(data["NR5G-NSA SINR"]), -10, 30, 'db');
+
+            updateProgressBar('nr5g-sa-rsrq-progress', 'nr5g-sa-rsrq-progress-value', parseFloat(data["NR5G-SA RSRQ"]), -20, -6, 'db');
+            updateProgressBar('nr5g-sa-rsrp-progress', 'nr5g-sa-rsrp-progress-value', parseFloat(data["NR5G-SA RSRP"]), -140, -60);
+            updateProgressBar('nr5g-sa-sinr-progress', 'nr5g-sa-sinr-progress-value', parseFloat(data["NR5G-SA SINR"]), -10, 30, 'db');
+            
+            // Re-schedule next update (Fix bug loading)
+            scheduleUpdate();
         })
-        .catch(error => {
-            console.error('Error fetching modem info:', error);
-
-            // In case of an error fetching data, set "No Signal" for all progress bars
-            updateProgressBar('signal-progress', 'signal-progress-value', NaN, 0, 99);
-            updateProgressBar('rssi-progress', 'rssi-progress-value', NaN, -110, -50);
-            updateProgressBar('lte-rsrq-progress', 'lte-rsrq-progress-value', NaN, -20, 3);
-            updateProgressBar('lte-rsrp-progress', 'lte-rsrp-progress-value', NaN, -140, -44);
-            updateProgressBar('lte-sinr-progress', 'lte-sinr-progress-value', NaN, -20, 30);
-            updateProgressBar('nr5g-nsa-rsrq-progress', 'nr5g-nsa-rsrq-progress-value', NaN, -20, 3);
-            updateProgressBar('nr5g-nsa-rsrp-progress', 'nr5g-nsa-rsrp-progress-value', NaN, -140, -44);
-            updateProgressBar('nr5g-nsa-sinr-progress', 'nr5g-nsa-sinr-progress-value', NaN, -20, 30);
-            updateProgressBar('nr5g-sa-rsrq-progress', 'nr5g-sa-rsrq-progress-value', NaN, -20, 3);
-            updateProgressBar('nr5g-sa-rsrp-progress', 'nr5g-sa-rsrp-progress-value', NaN, -140, -44);
-            updateProgressBar('nr5g-sa-sinr-progress', 'nr5g-sa-sinr-progress-value', NaN, -20, 30);
+        .catch(err => {
+            console.error(err);
+            scheduleUpdate();
         });
 }
 
-// Fetch available ports and set the saved comm port as default
-function fetchCommPorts() {
-    fetch('<%=luci.dispatcher.build_url("admin/modem/modeminfo/get_ports_info")%>')
-        .then(response => response.json())
-        .then(data => {
-            const ports = data.ports;
-            const savedPort = "<%= saved_comm %>";  // Use saved_comm directly from the template
-            const commPortSelect = document.getElementById("commport-select");
-
-            // Clear existing options
-            commPortSelect.innerHTML = "";
-
-            // Populate the dropdown with the available ports
-            ports.forEach(port => {
-                const option = document.createElement("option");
-                option.value = port;
-                option.text = port;
-
-                // Use the saved commport as the default
-                if (port === savedPort) {
-                    option.selected = true;
-                }
-
-                commPortSelect.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Error fetching comm ports:', error));
+function scheduleUpdate() {
+    clearTimeout(refreshTimer);
+    let rate = parseFloat("<%=refresh_rate%>") * 1000;
+    if (isNaN(rate) || rate < 500) rate = 2000; 
+    refreshTimer = setTimeout(updateModemInfo, rate);
 }
 
-// Auto-refresh values based on the selected refresh interval
-let refresh_rate = <%=refresh_rate%> * 1000;
-setInterval(updateModemInfo, refresh_rate);
+function fetchCommPorts() {
+    fetch('<%=luci.dispatcher.build_url("admin/modem/modeminfo/get_ports_info")%>')
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById("commport-select");
+            const saved = "<%=saved_comm%>";
+            data.ports.forEach(p => {
+                const opt = new Option(p, p);
+                if (p === saved) opt.selected = true;
+                select.add(opt);
+            });
+        });
+}
 
-// Fetch comm ports on page load
 window.onload = function() {
     fetchCommPorts();
-    // Trigger an initial fetch on page load
+    togglePrivacy(); // Start with hidden
     updateModemInfo();
 };
 </script>
+
 <%+footer%>
